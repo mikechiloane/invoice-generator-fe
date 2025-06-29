@@ -1,18 +1,23 @@
-import Item from "antd/es/list/Item";
-import TextInput from "../input/TextInputField/TextInput"
+"use client";
+import React from "react";
 import { CustomerDetailsSection } from "../sections/customer_details";
 import { InvoiceDatesSection } from "../sections/invoice_dates";
 import { ItemSection } from "../sections/item_section";
+import { useFormStore } from "@/app/context/FormContext";
 
 
 const InvoiceForm = () => {
+    const { updateFormValue } = useFormStore();
+    const handleChange = (field: string, value: any) => {
+        updateFormValue(field, value);
+    };
 
     return (
         <div className="flex flex-col gap-4 ">
             <InvoiceFormTitle />
             <InvoiceSectionsContainer>
-                <CustomerDetailsSection />
-                <InvoiceDatesSection />
+                <CustomerDetailsSection onChange={handleChange} />
+                <InvoiceDatesSection onChange={handleChange} />
                 <ItemSection />
             </InvoiceSectionsContainer>
         </div>

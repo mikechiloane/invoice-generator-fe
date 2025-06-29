@@ -1,21 +1,23 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { rBold, rDemiBold, rMed, rReg } from "../../fonts";
+import { useFormStore } from "@/app/context/FormContext";
 
 
 export interface TextInputProps {
-    value: string;
-    onChange: (value: string) => void;
+    onChange: (field: string, value: string) => void;
     placeholder?: string;
     disabled?: boolean;
     className?: string;
     type?: string;
     required?: boolean;
-    title: string;
+    title?: string;
+    fieldName: string;
+    error?: string;
+    isCalendarField?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
-    value,
     onChange,
     placeholder = "",
     disabled = false,
@@ -23,21 +25,73 @@ const TextInput: React.FC<TextInputProps> = ({
     type = "text",
     required = false,
     title,
+    fieldName = "",
+    error,
+    isCalendarField = false
 }) => {
+    const fieldValue = useFormStore((state) => state.formData[fieldName]);
+
+
+    if (isCalendarField) {
+        return (
+            <div className={`flex  flex-col gap-2 ${className}`}>
+                {title && <span className={`${rDemiBold.className} text-[14px] text-gray-600`}>
+                    {title}
+                </span>
+                }
+                <div className="relative w-full flex">
+                    <input
+                        className={`${rMed.className} font-semibold text-[14px] font-r-reg border-2 ${error ? 'border-red-500' : 'border-slate-600'} rounded p-2 pr-10 placeholder:text-slate-400 w-full h-[42px] box-border [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-inner-spin-button]:appearance-none touch-manipulation`}
+                        value={fieldValue || ''}
+                        onChange={(e) => onChange(fieldName, e.target.value)}
+                        placeholder={placeholder}
+                        disabled={disabled}
+                        type="date"
+                        name={fieldName}
+                        required={required}
+                        style={{ colorScheme: 'light' }}
+                    />
+                    <div
+                        className="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center cursor-pointer"
+                        onClick={() => {
+                            const input = document.querySelector(`input[name="${fieldName}"]`) as HTMLInputElement;
+                            if (input) input.showPicker();
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="text-gray-500" viewBox="0 0 16 16">
+                            <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                        </svg>
+                    </div>
+                </div>
+                {error && (
+                    <span className={`${rReg.className} text-xs text-red-500 mt-1`}>
+                        {error}
+                    </span>
+                )}
+            </div>
+        );
+    }
+
     return (
         <div className={`flex flex-col gap-2 ${className}`}>
-            <span className={`${rDemiBold.className} text-[14px] text-slate-700]`}>
+            {title && <span className={`${rDemiBold.className} text-[14px] text-gray-600`}>
                 {title}
             </span>
+            }
             <input
-                className={`${rMed.className} font-semibold text-[14px]  font-r-reg border-2 border-slate-600  rounded p-2 placeholder:text-slate-400`}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
+                className={`${rMed.className} font-semibold text-[14px] font-r-reg border-2 ${error ? 'border-red-500' : 'border-slate-600'} rounded p-2 placeholder:text-slate-400`}
+                value={fieldValue}
+                onChange={(e) => onChange(fieldName, e.target.value)}
                 placeholder={placeholder}
                 disabled={disabled}
                 type={type}
                 required={required}
             />
+            {error && (
+                <span className={`${rReg.className} text-xs text-red-500 mt-1`}>
+                    {error}
+                </span>
+            )}
         </div>
     );
 };

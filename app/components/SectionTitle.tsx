@@ -5,6 +5,5 @@ interface SectionTitleProps {
 }
 
 export function SectionTitle({ title }: SectionTitleProps) {
-
     return <h2 className="text-[20px] font-r-bold">{title}</h2>;
 }

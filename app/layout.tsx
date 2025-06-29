@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { rBold, rDemiBold, rMed, rReg } from "./components/fonts";
 import { Header } from "./components/header";
+import 'reactjs-popup/dist/index.css';
 
 
 
