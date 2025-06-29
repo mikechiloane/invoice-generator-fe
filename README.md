@@ -1,10 +1,10 @@
 # Invoice Generator Frontend
 
-A modern, responsive web application for generating professional invoices with a clean, user-friendly interface.
+A modern, responsive Next.js web application for generating professional invoices with a clean, user-friendly interface.
 
 ## About This Project
 
-The Invoice Generator is a Next.js and TypeScript application designed to create professional invoices. It features a responsive interface that adapts to both desktop and mobile devices, providing an optimal user experience regardless of screen size.
+The Invoice Generator is built with Next.js and TypeScript, designed to create professional invoices with ease. It leverages the powerful features of Next.js including server-side rendering and optimized client-side navigation to provide a fast, responsive interface that adapts to both desktop and mobile devices.
 
 ## Core Functionality
 
@@ -18,6 +18,7 @@ The Invoice Generator is a Next.js and TypeScript application designed to create
 
 The application leverages several modern web technologies:
 
+- **Next.js Framework**: Built on React with enhanced features for performance and SEO
 - **State Management**: Uses Zustand for centralized state management, making it easy to track and update invoice data across components
 - **Form Components**: Custom input components handle different data types (text, numbers, dates)
 - **Responsive Design**: Different components render based on screen size (ItemsTable for desktop, MobileItemCard for mobile)
@@ -133,13 +134,9 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 ```bash
 # Create production build
 npm run build
-# or
-yarn build
 
 # Start production server
-npm start
-# or
-yarn start
+npm run start
 ```
 
 ## License
