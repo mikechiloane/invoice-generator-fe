@@ -1,8 +1,8 @@
 import { SectionTitle } from "../../SectionTitle";
 import MobileItemCard from "./MobileItemCard";
-import AddItemMobile from "./AddItemPopupCard";
 import ItemsTable from "./ItemsTable";
 import { useFormStore } from "@/app/context/FormContext";
+import AddItemMobile from "./AddItemMobile";
 
 const ItemSection = () => {
     const { formData } = useFormStore();

@@ -7,7 +7,7 @@ import { useFormStore } from "@/app/context/FormContext";
 
 const AddItemForm = ({ onClose }: { onClose: () => void }) => {
 
-    const { addItem, resetItemFormData, formData, setFormData } = useFormStore();
+    const { addItem, resetItemFormData, formData, setFormData , updateTotals} = useFormStore();
     const [errors, setErrors] = useState<{ itemName?: string; quantity?: string; price?: string }>({});
 
     const validateForm = () => {
@@ -42,6 +42,7 @@ const AddItemForm = ({ onClose }: { onClose: () => void }) => {
         
         const { itemName, quantity, price } = formData;
         addItem({ itemName, quantity, price });
+        updateTotals();
         resetItemFormData();
         onClose();
     }

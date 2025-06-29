@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Invoice Generator Frontend
 
-## Getting Started
+A modern, responsive web application for generating professional invoices with a clean, user-friendly interface.
 
-First, run the development server:
+## About This Project
+
+The Invoice Generator is a Next.js and TypeScript application designed to create professional invoices. It features a responsive interface that adapts to both desktop and mobile devices, providing an optimal user experience regardless of screen size.
+
+## Core Functionality
+
+- Create and customize invoices with client and business details
+- Add, edit, and remove line items from invoices
+- Set invoice dates and due dates using a custom calendar picker
+- Calculate subtotals, apply tax rates, and generate final amounts automatically
+- Validate form inputs to ensure data integrity
+
+## Technical Implementation
+
+The application leverages several modern web technologies:
+
+- **State Management**: Uses Zustand for centralized state management, making it easy to track and update invoice data across components
+- **Form Components**: Custom input components handle different data types (text, numbers, dates)
+- **Responsive Design**: Different components render based on screen size (ItemsTable for desktop, MobileItemCard for mobile)
+- **Data Validation**: Form validation ensures all required fields are completed correctly
+
+## Key Features
+
+### Invoice Items Management
+
+Users can add items with names, quantities, and prices. The system automatically calculates the total for each item and updates the invoice subtotal accordingly.
+
+### Date Selection
+
+The application includes a custom date picker that displays dates in a user-friendly format (e.g., "25 June 2025") while maintaining proper date values for calculations and export.
+
+### Real-time Calculations
+
+As users add or remove items and adjust tax rates, the application immediately updates all calculations, showing accurate subtotals, tax amounts, and final totals.
+
+### Form Validation
+
+The system validates all inputs, ensuring that item names are provided, quantities and prices are positive numbers, and all required information is included before finalizing the invoice.
+│   │   └── FormContext.tsx
+│   └── page.tsx
+├── public/
+│   ├── add.svg
+│   └── delete.svg
+├── README.md
+└── package.json
+```
+
+## Key Components
+
+### Form Context
+
+The `FormContext.tsx` provides a central state management solution using Zustand. It manages:
+
+- Invoice details (dates, customer information)
+- Line items (products/services, quantities, prices)
+- Calculations (subtotals, tax rates, final amounts)
+
+### Input Components
+
+- **TextInput**: Flexible text input component with support for:
+  - Regular text fields
+  - Number inputs
+  - Custom date picker with formatted date display
+  - Validation error messages
+
+### Item Section Components
+
+- **ItemsTable**: Desktop view for displaying and managing invoice items
+- **MobileItemCard**: Mobile-optimized view for displaying invoice items
+- **AddItemMobile**: Component for adding new items to the invoice
+
+## Usage
+
+### Adding Items
+
+1. Click the "Add Item" button
+2. Fill in the item name, quantity, and price
+3. Click "Add Item" to add it to the invoice
+4. The subtotal, tax, and total will automatically update
+
+### Setting Dates
+
+1. Click on date fields to open the calendar picker
+2. Select a date from the calendar
+3. The date will be displayed in the format "25 June 2025"
+
+### Validation
+
+The form validates user input to ensure:
+- Item names are provided
+- Quantities are greater than zero
+- Prices are valid numbers
+
+## Development
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone <repository-url>
+
+# Navigate to the project directory
+cd invoice-generator-fe
+
+# Install dependencies
+npm install
+# or
+yarn install
+```
+
+### Running the Development Server
+
+```bash
+# Start the development server
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Create production build
+npm run build
+# or
+yarn build
 
-## Learn More
+# Start production server
+npm start
+# or
+yarn start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT License](LICENSE)
