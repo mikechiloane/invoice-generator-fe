@@ -1,13 +1,15 @@
 import { rBold } from "@/app/components/fonts";
+import { useFormStore } from "@/app/context/FormContext";
 import Image from "next/image";
 
 interface MobileItemCardProps {
     itemName: string;
-    quantity: string;
-    price: string;
+    quantity: number;
+    price: number;
 }
 
 const MobileItemCard = ({ itemName, quantity, price }: MobileItemCardProps) => {
+    const { removeItem } = useFormStore();
     return (
         <div className="flex bg-slate-200 justify-between md:hidden">
             <div>
@@ -19,6 +21,7 @@ const MobileItemCard = ({ itemName, quantity, price }: MobileItemCardProps) => {
             </div>
             <div className="flex items-center justify-center p-4">
                 <Image
+                    onClick={() => removeItem(itemName)}
                     src="/delete.svg"
                     alt="delete icon"
                     width={30}

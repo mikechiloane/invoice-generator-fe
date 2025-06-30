@@ -46,6 +46,7 @@ const TextInput: React.FC<TextInputProps> = ({
                         onChange={(e) => onChange(fieldName, e.target.value)}
                         placeholder={placeholder}
                         disabled={disabled}
+                    
                         type="date"
                         name={fieldName}
                         required={required}

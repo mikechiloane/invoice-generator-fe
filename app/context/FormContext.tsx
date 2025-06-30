@@ -1,10 +1,21 @@
 import { create } from 'zustand';
+import { InvoiceApiService } from '../services/invoiceApi';
+import { PdfHandler } from '../utils/pdfHandler';
 
 export interface FormData {
     [key: string]: any;
-    invoiceDate?: string;
-    dueDate?: string;
-    items: Item[] | [];
+    itemName: string, quantity: number, price: number;
+    customerName: string;
+    addressLines: {
+        emailAddress: string;
+        streetAddress: string;
+        suburb: string;
+        city: string;
+        postalCode: string;
+    };
+    invoiceDate: string;
+    dueDate: string;
+    items: Item[];
     totals: Totals;
 }
 
@@ -17,8 +28,8 @@ export interface Totals {
 
 export interface Item {
     itemName: string;
-    quantity: string;
-    price: string;
+    quantity: number;
+    price: number;
 }
 
 
@@ -31,10 +42,22 @@ interface FormState {
     resetItemFormData: () => void;
     removeItem: (name: string) => void;
     updateTotals: () => void;
+    submitInvoice: () => Promise<Response | void>;
 }
 
-export const useFormStore = create<FormState>((set) => ({
+export const useFormStore = create<FormState>((set, get) => ({
     formData: {
+        itemName: "",
+        price: 0,
+        quantity: 0,
+        customerName: '',
+        addressLines: {
+            emailAddress: '',
+            streetAddress: '',
+            suburb: '',
+            city: '',
+            postalCode: ''
+        },
         invoiceDate: '',
         dueDate: '',
         items: [],
@@ -95,22 +118,66 @@ export const useFormStore = create<FormState>((set) => ({
     resetItemFormData: () => set((state) => ({
         formData: {
             ...state.formData,
-            itemName: "", quantity: "", price: ''
+            itemName: "",
+            quantity: 0,
+            price: 0
         }
     })),
 
     resetForm: () => set(() => ({
         formData: {
+            itemName: "",
+            quantity: 0,
+            price: 0,
+
+            customerName: '',
+            addressLines: {
+                emailAddress: '',
+                streetAddress: '',
+                suburb: '',
+                city: '',
+                postalCode: ''
+            },
             invoiceDate: '',
             dueDate: '',
             items: [],
             totals: {
                 subTotal: 0,
-                taxRate: 0,
-                tax: 15,
+                taxRate: 15,
+                tax: 0,
                 total: 0
             }
         }
+    })),
 
-    }))
+    submitInvoice: async () => {
+        const { formData } = get();
+        const addressLines = buildAddressLines(formData);
+
+        try {
+            const payload = InvoiceApiService.buildPayload(formData, addressLines);
+            const blob = await InvoiceApiService.generateInvoice(payload);
+            PdfHandler.openPdf(blob);
+        } catch (error) {
+            console.error('Failed to submit invoice:', error);
+        }
+    },
 }));
+
+
+export const buildAddressLines = (addressLines: FormData): string[] => {
+    const lines: string[] = [];
+    if (addressLines.streetAddress) {
+        lines.push(addressLines.streetAddress);
+    }
+    if (addressLines.suburb) {
+        lines.push(addressLines.suburb);
+    }
+    if (addressLines.city) {
+        lines.push(addressLines.city);
+    }
+    if (addressLines.postalCode) {
+        lines.push(addressLines.postalCode);
+    }
+    return lines;
+}
