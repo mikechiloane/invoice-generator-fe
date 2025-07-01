@@ -87,17 +87,17 @@ const AddItemForm = ({ onClose }: { onClose: () => void }) => {
                     error={errors.price}
                 />
 
-                <div className="flex justify-end pt-4">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6">
                     <button
                         type="button"
-                        className="mr-2 px-4 py-2 border border-gray-400 rounded-md text-sm font-medium ]"
+                        className="px-4 py-3 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors touch-manipulation"
                         onClick={handleClose}
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleSubmit}
-                        className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[var(--secondary)]"
+                        className="px-4 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors touch-manipulation"
                     >
                         Add Item
                     </button>
@@ -116,10 +116,13 @@ const AddItemMobile = () => {
 
     return (
         <>
-            <div className="flex gap-2 items-center cursor-pointer" onClick={() => setOpen(true)}>
-                <Image src="/add.svg" alt="add icon" width={30} height={50} />
-                <p className="text-[var(--secondary)] text-sm">Add Item</p>
-            </div>
+            <button 
+                className="flex gap-2 items-center p-3 rounded-lg border-2 border-dashed border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 w-full sm:w-auto touch-manipulation"
+                onClick={() => setOpen(true)}
+            >
+                <Image src="/add.svg" alt="add icon" width={24} height={24} />
+                <span className="text-blue-600 text-sm font-medium">Add Item</span>
+            </button>
 
             <Popup
                 open={open}
@@ -139,14 +142,17 @@ const AddItemMobile = () => {
                     zIndex: 1000
                 }}
                 contentStyle={{
-                    width: '90%',
+                    width: '95%',
                     maxWidth: '500px',
                     background: 'white',
-                    padding: '20px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                    padding: '24px',
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
                     margin: '0',
                     border: 'none',
-                    position: 'relative'
+                    position: 'relative',
+                    maxHeight: '90vh',
+                    overflow: 'auto'
                 }}
             >
                 <AddItemForm onClose={handleClose} />

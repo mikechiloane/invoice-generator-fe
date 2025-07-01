@@ -35,6 +35,13 @@ export interface Item {
 
 interface FormState {
     formData: FormData;
+    isLoading: boolean;
+    error: string | null;
+    toast: {
+        message: string;
+        type: 'success' | 'error' | 'info';
+        isVisible: boolean;
+    } | null;
     setFormData: (data: FormData) => void;
     updateFormValue: (field: string, value: any) => void;
     resetForm: () => void;
@@ -43,6 +50,10 @@ interface FormState {
     removeItem: (name: string) => void;
     updateTotals: () => void;
     submitInvoice: () => Promise<Response | void>;
+    setLoading: (loading: boolean) => void;
+    setError: (error: string | null) => void;
+    showToast: (message: string, type: 'success' | 'error' | 'info') => void;
+    hideToast: () => void;
 }
 
 export const useFormStore = create<FormState>((set, get) => ({
@@ -68,6 +79,9 @@ export const useFormStore = create<FormState>((set, get) => ({
             total: 0
         }
     },
+    isLoading: false,
+    error: null,
+    toast: null,
 
     setFormData: (data) => set({ formData: data }),
 
@@ -78,13 +92,11 @@ export const useFormStore = create<FormState>((set, get) => ({
     }),
 
     updateTotals: () => set((state) => {
-        console.log('Updating totals...');
         const items = state.formData.items;
         const subTotal = items.reduce((acc, item) => acc + (Number(item.quantity) * Number(item.price)), 0);
         const taxRate = Number(state.formData.totals.taxRate) || 0;
         const tax = subTotal * (taxRate / 100);
         const total = subTotal + tax;
-        console.log(`Calculating totals: subTotal=${subTotal}, taxRate=${taxRate}, tax=${tax}, total=${total}`);
         return {
             formData: {
                 ...state.formData,
@@ -154,13 +166,52 @@ export const useFormStore = create<FormState>((set, get) => ({
         const { formData } = get();
         const addressLines = buildAddressLines(formData);
 
+        set({ isLoading: true, error: null });
+
         try {
             const payload = InvoiceApiService.buildPayload(formData, addressLines);
             const blob = await InvoiceApiService.generateInvoice(payload);
             PdfHandler.openPdf(blob);
+            set({ isLoading: false });
+            set({ 
+                toast: { 
+                    message: 'Invoice generated successfully!', 
+                    type: 'success', 
+                    isVisible: true 
+                } 
+            });
         } catch (error) {
-            console.error('Failed to submit invoice:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Failed to generate invoice. Please try again.';
+            set({ 
+                isLoading: false, 
+                error: errorMessage,
+                toast: { 
+                    message: errorMessage, 
+                    type: 'error', 
+                    isVisible: true 
+                } 
+            });
         }
+    },
+
+    setLoading: (loading: boolean) => set({ isLoading: loading }),
+    
+    setError: (error: string | null) => set({ error }),
+
+    showToast: (message: string, type: 'success' | 'error' | 'info') => {
+        set({ 
+            toast: { 
+                message, 
+                type, 
+                isVisible: true 
+            } 
+        });
+    },
+
+    hideToast: () => {
+        set({ 
+            toast: null 
+        });
     },
 }));
 

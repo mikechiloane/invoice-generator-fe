@@ -7,11 +7,11 @@ interface CustomerDetailsSectionProps {
 
 const CustomerDetailsSection = ({ onChange }: CustomerDetailsSectionProps) => {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 sm:gap-6">
             <SectionTitle title='Customer Details' />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <TextInput
-                fieldName='customerName'
+                    fieldName='customerName'
                     title="Customer Name"
                     placeholder="Enter customer name"
                     onChange={onChange}
@@ -24,7 +24,7 @@ const CustomerDetailsSection = ({ onChange }: CustomerDetailsSectionProps) => {
                 />
 
                 <TextInput
-                    fieldName='phoneNumber'
+                    fieldName='streetAddress'
                     title="Street Address"
                     placeholder="Enter street address"
                     onChange={onChange}
@@ -36,12 +36,13 @@ const CustomerDetailsSection = ({ onChange }: CustomerDetailsSectionProps) => {
                     placeholder="Enter suburb"
                     onChange={onChange}
                 />
-                <div className="flex w-full flex-col md:flex-row gap-4">
+                
+                <div className="flex w-full flex-col sm:flex-row gap-4 md:col-span-2">
                     <TextInput
                         fieldName='city'
                         title="City"
                         placeholder="Enter city"
-                        className="md:w-1/2"
+                        className="flex-1"
                         onChange={onChange}
                     />
 
@@ -49,7 +50,7 @@ const CustomerDetailsSection = ({ onChange }: CustomerDetailsSectionProps) => {
                         fieldName='postalCode'
                         title="Postal Code"
                         placeholder="Enter postal code"
-                        className="md:w-1/3 w-[200px]"
+                        className="w-full sm:w-40"
                         onChange={onChange}
                     />
                 </div>

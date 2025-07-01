@@ -15,6 +15,7 @@ const ItemSection = () => {
                 <div className="flex flex-col md:hidden gap-y-4">
                     {items.map((item, index) => (
                         <MobileItemCard
+                            
                             key={index}
                             itemName={item.itemName}
                             quantity={item.quantity}
