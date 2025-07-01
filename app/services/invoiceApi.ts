@@ -23,7 +23,7 @@ export interface InvoicePayload {
 }
 
 export class InvoiceApiService {
-    private static readonly API_URL = 'https://mv7vubgi4i.execute-api.us-east-1.amazonaws.com/prod/api/invoice/generate';
+    private static readonly API_URL = process.env.NEXT_PUBLIC_INVOICE_API_URL || 'https://mv7vubgi4i.execute-api.us-east-1.amazonaws.com/prod/api/invoice/generate';
 
     static async generateInvoice(payload: InvoicePayload): Promise<Blob> {
         const response = await fetch(this.API_URL, {

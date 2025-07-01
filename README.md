@@ -116,7 +116,17 @@ cd invoice-generator-fe
 npm install
 # or
 yarn install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your API URL
 ```
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and configure the following:
+
+- `NEXT_PUBLIC_INVOICE_API_URL`: Your invoice generation API endpoint
 
 ### Running the Development Server
 
