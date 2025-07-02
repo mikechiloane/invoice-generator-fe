@@ -31,6 +31,11 @@ const TextInput: React.FC<TextInputProps> = ({
 }) => {
     const fieldValue = useFormStore((state) => state.formData[fieldName]);
     const isLoading = useFormStore((state) => state.isLoading);
+    
+    // Ensure fieldValue is treated as a string for input components
+    const displayValue = typeof fieldValue === 'string' || typeof fieldValue === 'number' 
+        ? String(fieldValue) 
+        : "";
 
     if (isCalendarField) {
         return (
@@ -53,7 +58,7 @@ const TextInput: React.FC<TextInputProps> = ({
                             transition-all duration-200 ease-in-out
                             focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
                         `}
-                        value={fieldValue || ''}
+                        value={displayValue || ''}
                         onChange={(e) => onChange(fieldName, e.target.value)}
                         placeholder={placeholder}
                         disabled={disabled || isLoading}
@@ -100,7 +105,7 @@ const TextInput: React.FC<TextInputProps> = ({
                     transition-all duration-200 ease-in-out
                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
                 `}
-                value={fieldValue || ""}
+                value={displayValue || ""}
                 onChange={(e) => onChange(fieldName, e.target.value)}
                 placeholder={placeholder}
                 disabled={disabled || isLoading}

@@ -45,13 +45,13 @@ const InvoiceForm = () => {
 
 const InvoiceSectionsContainer = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="flex overflow-hidden relative h-full flex-col gap-6 sm:gap-8">
+        <div className="flex  relative h-full flex-col gap-6 sm:gap-8">
             {children}
         </div>
     );
 }
 
-function InvoiceFormTitle({ }) {
+function InvoiceFormTitle() {
     return (
         <div className="flex mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-[2rem] font-bold text-gray-900 leading-tight">

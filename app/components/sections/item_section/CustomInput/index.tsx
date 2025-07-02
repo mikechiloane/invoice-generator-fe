@@ -24,8 +24,12 @@ const CustomInput = ({
 }: CustomInputProps) => {
     const formData = useFormStore((state) => state.formData);
     const updateFormValue = useFormStore((state) => state.updateFormValue);
+    
+    // Type-safe date value handling
+    const fieldValue = formData[fieldName];
+    const stringFieldValue = typeof fieldValue === 'string' ? fieldValue : "";
     const [dateValue, setDateValue] = useState<Date | null>(
-        formData[fieldName] ? new Date(formData[fieldName]) : null
+        stringFieldValue ? new Date(stringFieldValue) : null
     );
 
     if (isCalendarField) {
@@ -37,7 +41,7 @@ const CustomInput = ({
                 <input
                     type="date"
                     placeholder={placeholder}
-                    value={value ?? formData[fieldName] ?? ""}
+                    value={value ?? stringFieldValue ?? ""}
                     onChange={(e) => updateFormValue(fieldName, e.target.value)}
                     className={`w-full border-b text-[14px] font-semibold ${rMed.className} border-gray-300 focus:outline-none focus:border-blue-500 p-2 text-${align}`}
                 />
@@ -49,7 +53,7 @@ const CustomInput = ({
         <input
             type={type}
             placeholder={placeholder}
-            value={value ?? formData[fieldName] ?? ""}
+            value={value ?? stringFieldValue ?? ""}
             onChange={(e) => updateFormValue(fieldName, e.target.value)}
             className={`w-full border-b text-[14px] font-semibold ${rMed.className} border-gray-300 focus:outline-none focus:border-blue-500 p-2 text-${align} ${className}`}
         />

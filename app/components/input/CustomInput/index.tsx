@@ -25,11 +25,16 @@ const CustomInput = ({
     const { updateFormValue } = useFormStore();
     const fieldValue = useFormStore((state) => state.formData[fieldName]);
     const isLoading = useFormStore((state) => state.isLoading);
+    
+    // Ensure fieldValue is treated as a string for input components
+    const displayValue = typeof fieldValue === 'string' || typeof fieldValue === 'number' 
+        ? String(fieldValue) 
+        : "";
 
     return (
         <div className="w-full">
             <input
-                value={fieldValue || ""}
+                value={displayValue || ""}
                 type={type}
                 placeholder={placeholder}
                 onChange={(e) => updateFormValue(fieldName, e.target.value)}

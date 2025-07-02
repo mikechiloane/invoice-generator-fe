@@ -2,9 +2,19 @@ import { create } from 'zustand';
 import { InvoiceApiService } from '../services/invoiceApi';
 import { PdfHandler } from '../utils/pdfHandler';
 
+export interface AddressLines {
+    emailAddress: string;
+    streetAddress: string;
+    suburb: string;
+    city: string;
+    postalCode: string;
+}
+
 export interface FormData {
-    [key: string]: any;
-    itemName: string, quantity: number, price: number;
+    [key: string]: string | number | boolean | Item[] | Totals | AddressLines | undefined;
+    itemName: string;
+    quantity: number;
+    price: number;
     customerName: string;
     addressLines: {
         emailAddress: string;
@@ -43,7 +53,7 @@ interface FormState {
         isVisible: boolean;
     } | null;
     setFormData: (data: FormData) => void;
-    updateFormValue: (field: string, value: any) => void;
+    updateFormValue: (field: string, value: string | number | AddressLines | Item[] | Totals) => void;
     resetForm: () => void;
     addItem: (item: Item) => void;
     resetItemFormData: () => void;
@@ -216,19 +226,24 @@ export const useFormStore = create<FormState>((set, get) => ({
 }));
 
 
-export const buildAddressLines = (addressLines: FormData): string[] => {
-    const lines: string[] = [];
-    if (addressLines.streetAddress) {
-        lines.push(addressLines.streetAddress);
+export const buildAddressLines = (formData: FormData): string[] => {
+    const lines: string[]  = [];
+    const {streetAddress, suburb, city, postalCode} = formData;
+    if (streetAddress) {
+        lines.push(String(streetAddress));
     }
-    if (addressLines.suburb) {
-        lines.push(addressLines.suburb);
+    if (suburb) {
+        lines.push(String(suburb));
     }
-    if (addressLines.city) {
-        lines.push(addressLines.city);
+    if (city) {
+        lines.push(String(city));
     }
-    if (addressLines.postalCode) {
-        lines.push(addressLines.postalCode);
+    if (postalCode) {       
+        lines.push(String(postalCode));
     }
+    if (formData.addressLines?.emailAddress) {
+        lines.push(String(formData.addressLines.emailAddress));
+    }
+
     return lines;
 }
