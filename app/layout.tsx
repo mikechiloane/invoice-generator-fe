@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${rReg.className} ${rMed.className} ${rBold.className} ${rDemiBold.className}h-full w-screen antialiased`}
+        className={`${rReg.className} ${rMed.className} ${rBold.className} ${rDemiBold.className} h-full w-screen antialiased`}
       >
         <div className="max-w-4xl mx-auto px-4 py-8 h-full">
           <Header />
